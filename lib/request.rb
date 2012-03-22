@@ -8,13 +8,13 @@ module Database
     unless DB[:urls].first(url: res[:url])
       DB[:urls].insert url: res[:url]
     end
-    last = DB[:requests].filter(url: res[:url]).order(:created.desc).first
-    if last && last[:created] > (Time.now - (60 * 10))
-      puts "Recently fetched url: #{res[:url]}"
-    else
-      DB[:requests].insert res
-    end
+    DB[:requests].insert res
   rescue
     puts $!
+  end
+
+  def self.recently_fetched?(url)
+    last = DB[:requests].filter(url: url).order(:created.desc).first
+    last && last[:created] > (Time.now - (60 * 10))
   end
 end

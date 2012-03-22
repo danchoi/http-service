@@ -8,6 +8,7 @@ create table requests (
   request_id serial primary key,
   url varchar references urls(url),
   redirect varchar references urls(url),
+  response_code integer,
   content_type varchar,
   headers text,
   body text,
