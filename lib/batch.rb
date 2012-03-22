@@ -32,10 +32,11 @@ class Batch
           curl.on_header {|data| res[:headers] << data; data.size}
           curl.timeout = 90  # how can we handle an error?
           curl.on_complete do |easy| 
+            next if easy.response_code == 0
             puts "Completed: #{url}"
             res[:latency] = Time.now - start_time
             cumulative_times << res[:latency]
-            res[:response_code] = easy.response_code
+            res[:response_code] = easy.response_code.to_s
             res[:content_type] = easy.content_type  # e.g. text/xml; charset=UTF-8
             if url != easy.last_effective_url
               res[:redirect] = easy.last_effective_url
@@ -44,7 +45,7 @@ class Batch
           end
           curl.on_failure do |easy,code|
             puts "Failed: #{url}"
-            res[:error] = code
+            res[:error] = code.to_s       # e.g.  [Curl::Err::HostResolutionError, "Couldn't resolve host name"]
             Database.create_request(res)
           end
         end
@@ -73,6 +74,7 @@ if __FILE__ == $0
    http://feedsanitizer.appspot.com/sanitize?url=http%3A%2F%2Fsimu.rtwblog.de%2Ffeed%2F&format=rss
    http://fulltextrssfeed.com/blog.independent.org/feed
    http://kindlefeeder.com/fail
+   http://kindlefeeders.com/fail
   )
 
   puts feeds.inspect

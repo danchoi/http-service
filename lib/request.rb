@@ -1,6 +1,4 @@
 require 'sequel'
-
-
 DB = Sequel.connect 'postgres:///http-service'
 
 module Database
@@ -11,6 +9,7 @@ module Database
     DB[:requests].insert res
   rescue
     puts $!
+    puts $!.backtrace
   end
 
   def self.recently_fetched?(url)
