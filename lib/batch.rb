@@ -53,7 +53,7 @@ class Batch
       end
       m.perform
     end
-    log "Done fetching and parsing feeds"
+    log "Done"
     @results
   end
 end

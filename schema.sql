@@ -7,7 +7,7 @@ create table urls (
 create table requests (
   request_id serial primary key,
   url varchar references urls(url),
-  redirect varchar references urls(url),
+  redirect varchar,
   response_code integer,
   content_type varchar,
   headers text,
@@ -16,3 +16,5 @@ create table requests (
   error text,
   created timestamp with time zone default now()
 );
+
+
