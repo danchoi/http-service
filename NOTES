@@ -20,3 +20,7 @@ Resources:
   crawl:
     a collection of requests
 
+
+psql http-service -c 'select url, response_code, content_type, error from requests'
+
+

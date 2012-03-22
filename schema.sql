@@ -18,3 +18,6 @@ create table requests (
 );
 
 
+create table crawls (
+
+);

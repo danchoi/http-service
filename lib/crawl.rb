@@ -3,7 +3,7 @@
 require 'curb'
 require 'request'
 
-class Batch
+class Crawl
   SLICE = 10
 
   attr_accessor :results
@@ -79,7 +79,7 @@ if __FILE__ == $0
 
   puts feeds.inspect
 
-  b = Batch.new(:urls => feeds)
+  b = Crawl.new(:urls => feeds)
   b.parallel_fetch 
 
 end
