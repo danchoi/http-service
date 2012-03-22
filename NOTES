@@ -23,4 +23,5 @@ Resources:
 
 psql http-service -c 'select url, response_code, content_type, error from requests'
 
+psql http-service -c 'select crawl_id, url, response_code, content_type, latency, error from requests'
 

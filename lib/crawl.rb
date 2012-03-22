@@ -12,7 +12,7 @@ class Crawl < Sequel::Model
   end
 
   def log s
-    puts s
+    puts "crawl #{self.crawl_id} : #{s}"
   end
 
   def parallel_fetch
@@ -31,7 +31,7 @@ class Crawl < Sequel::Model
           curl.timeout = 90  # how can we handle an error?
           curl.on_complete do |easy| 
             next if easy.response_code == 0
-            puts "Completed: #{url}"
+            log "completed #{url}"
             self.success_count += 1
             save
             res[:latency] = Time.now - start_time
@@ -44,7 +44,7 @@ class Crawl < Sequel::Model
             Database.create_request(res)
           end
           curl.on_failure do |easy,code|
-            puts "Failed: #{url}"
+            log "failed #{url}"
             res[:error] = code.to_s       # e.g.  [Curl::Err::HostResolutionError, "Couldn't resolve host name"]
             Database.create_request(res)
           end
