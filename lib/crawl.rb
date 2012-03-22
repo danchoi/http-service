@@ -3,14 +3,12 @@
 require 'curb'
 require 'request'
 
-class Crawl
+class Crawl < Sequel::Model
   SLICE = 10
 
-  attr_accessor :results
-  def initialize(opts={})
-    @opts = opts
-    @urls = opts.delete :urls     # an array of URLs
-    @results = []
+  def before_create
+    self.started = Time.now
+    self.url_count = urls.split(/\n/).size
   end
 
   def log s
@@ -21,10 +19,10 @@ class Crawl
     start = Time.now
     cumulative_times = []
     m = Curl::Multi.new
-    @urls.each_slice(SLICE).with_index do |slice, i|
+    urls.split(/\n/).each_slice(SLICE).with_index do |slice, i|
       slice.each do |url| 
         start_time = Time.now
-        res = {:body => "", :headers => "", url: url}
+        res = {:body => "", :headers => "", url: url, crawl_id:self.crawl_id}
         c = Curl::Easy.new(url) do |curl|
           curl.follow_location = true
           curl.useragent = "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.3) Gecko/2008092416 Firefox/3.0.3"
@@ -34,6 +32,8 @@ class Crawl
           curl.on_complete do |easy| 
             next if easy.response_code == 0
             puts "Completed: #{url}"
+            self.success_count += 1
+            save
             res[:latency] = Time.now - start_time
             cumulative_times << res[:latency]
             res[:response_code] = easy.response_code.to_s
@@ -52,6 +52,8 @@ class Crawl
         m.add c
       end
       m.perform
+      self.completed = Time.now 
+      save
     end
     log "Done"
     @results
@@ -77,9 +79,7 @@ if __FILE__ == $0
    http://kindlefeeders.com/fail
   )
 
-  puts feeds.inspect
-
-  b = Crawl.new(:urls => feeds)
+  b = Crawl.create(urls: feeds.join("\n"))
   b.parallel_fetch 
 
 end
