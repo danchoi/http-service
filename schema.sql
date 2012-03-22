@@ -11,7 +11,8 @@ create table crawls (
   url_count integer default 0,
   success_count integer default 0,
   urls text,
-  callback_url varchar
+  callback_url varchar,
+  callback_completed timestamp with time zone
 );
 
 create table requests (
