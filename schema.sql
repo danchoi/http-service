@@ -10,7 +10,8 @@ create table crawls (
   completed timestamp with time zone,
   url_count integer default 0,
   success_count integer default 0,
-  urls text
+  urls text,
+  callback_url varchar
 );
 
 create table requests (

@@ -12,7 +12,7 @@ class Crawl < Sequel::Model
   end
 
   def log s
-    puts "crawl #{self.crawl_id} : #{s}"
+    puts "crawl #{self.crawl_id} -> #{s}"
   end
 
   def parallel_fetch
@@ -59,7 +59,6 @@ class Crawl < Sequel::Model
     @results
   end
 end
-
 
 if __FILE__ == $0
   require 'yaml'
