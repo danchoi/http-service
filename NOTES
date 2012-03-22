@@ -1,0 +1,21 @@
+
+
+
+Maybe the HTTP service can be used by IW for API requests.
+
+The HTTP service can throttle to keep things under a rate limit, and
+also track the requests over time.
+
+
+Resources:
+  urls
+    url
+  requests
+    request_id
+    url
+    redirected to
+    response
+    time elapsed
+    content_type
+  crawl:
+    a collection of requests
