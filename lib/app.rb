@@ -1,7 +1,8 @@
 require 'sinatra'
 require 'sequel'
 require 'json'
-require 'crawl'
+require 'http_service/crawl'
+require 'http_service/cached_url'
 require 'uri'
 
 class HttpService < Sinatra::Application
@@ -57,10 +58,12 @@ class HttpService < Sinatra::Application
   end
 
   get '/url/:url_id' do |url_id|
-
     # TODO representation of body, content_type, any redirect
     # plus any failures
+    DB["select urls.url, requests,header from urls inner join requests on (urls.last_request_id = requests.request_id) where url_id = ?", url_id].to_hash
+  end
 
+  get '/url/:url_id/body' do |url_id|
   end
 end
 
