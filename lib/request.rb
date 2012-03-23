@@ -6,7 +6,9 @@ module Database
     unless DB[:urls].first(url: res[:url])
       DB[:urls].insert url: res[:url]
     end
-    DB[:requests].insert res
+    body = res.delete :body
+    request_id = DB[:requests].insert res
+    DB[:urls].filter(url: res[:url]).update(last_request_id: request_id, last_body: body)
   rescue
     puts $!
     puts $!.backtrace

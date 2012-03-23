@@ -1,8 +1,10 @@
 
 
 create table urls (
-  url varchar unique
+  url varchar unique,
+  last_body text
 );
+
 create table crawls (
   crawl_id serial primary key,
   created timestamp with time zone default now(),
@@ -23,9 +25,10 @@ create table requests (
   response_code integer,
   content_type varchar,
   headers text,
-  body text,
   latency float,
   error text,
   created timestamp with time zone default now()
 );
+
+alter table urls add column last_request_id integer references requests(request_id);
 
