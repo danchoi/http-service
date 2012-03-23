@@ -84,3 +84,11 @@ psql http-service -c 'select crawl_id, url, response_code, content_type, latency
 # included failed urls?
 
 
+
+  759  ./recreate.sh
+  760  ruby test/json.rb
+  762  ruby -Ilib lib/crawl.rb 1  # process crawl
+  765  curl http://localhost:9292/crawl/1 | parsejson >> NOTES
+ 
+
+
