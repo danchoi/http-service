@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+require 'redis'
+require 'http_service'
+
+REDIS = Redis.new
+
+loop do
+  while (item = REDIS.blpop("crawl-queue", 5_000)) do
+    puts "Processing item: #{item.inspect}"
+    c = HttpService::Crawl[item[1]]
+    c.parallel_fetch 
+  end
+  puts "blpop timeout, restarting"
+  sleep 2
+end
+

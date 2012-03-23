@@ -3,6 +3,8 @@ require 'sequel'
 require 'json'
 require 'uri'
 require 'http_service'
+require 'redis'
+REDIS = Redis.new
 
 module HttpService
 class API < Sinatra::Application
@@ -16,7 +18,8 @@ class API < Sinatra::Application
     body = request.body.read
     urls = JSON.parse(body)['urls']
     c = Crawl.create(urls: urls.join("\n"))
-    log "created crawl #{c.crawl_id}" 
+    log "created crawl #{c.crawl_id}; pushing onto queue" 
+    REDIS.rpush "crawl-queue", c.crawl_id
 
     # CHANGME. Do this asynchronously in a separate process or crontask
     # c.parallel_fetch 
