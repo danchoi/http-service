@@ -30,11 +30,8 @@ class API < Sinatra::Application
     representation.to_json
   end
 
-  # This is mainly to get status and a list of urls for client to get bodies of
-  # through sequential requests
-  #
-  # TODO make sure to include hypermedia links to show where to get results of
-  # crawl per URL
+  # This is mainly to get crawl status and links to the resource representation
+  # for each URL crawl result. 
 
   get '/crawl/:id' do |id|
     crawl = Crawl[id]
