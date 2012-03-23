@@ -14,8 +14,20 @@ class HttpService < Sinatra::Application
     c.parallel_fetch 
   end
 
+  # This is mainly to get status and a list of urls for client to get bodies of
+  # through sequential requests
+  #
+  # TODO make sure to include hypermedia links to show where to get results of
+  # crawl per URL
+
   get '/crawl/:id' do |id|
     DB[:crawls].first(crawl_id:id).to_json
+  end
+
+  get '/url' do 
+    url = params[:url]
+    # TODO representation of body, content_type, any redirect
+
   end
 end
 
