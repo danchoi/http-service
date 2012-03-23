@@ -19,7 +19,7 @@ class API < Sinatra::Application
     urls = JSON.parse(body)['urls']
     c = Crawl.create(urls: urls.join("\n"))
     log "created crawl #{c.crawl_id}; pushing onto queue" 
-    REDIS.rpush "crawl-queue", c.crawl_id
+    REDIS.rpush "http-service:crawl-queue", c.crawl_id
 
     # CHANGME. Do this asynchronously in a separate process or crontask
     # c.parallel_fetch 

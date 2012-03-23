@@ -7,7 +7,7 @@ require 'http_service'
 REDIS = Redis.new
 
 loop do
-  while (item = REDIS.blpop("crawl-queue", 5_000)) do
+  while (item = REDIS.blpop("http-service:crawl-queue", 5_000)) do
     puts "Processing item: #{item.inspect}"
     c = HttpService::Crawl[item[1]]
     c.parallel_fetch 
