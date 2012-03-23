@@ -20,8 +20,13 @@ class HttpService < Sinatra::Application
     # c.parallel_fetch 
     
     status 202 # Accepted
-
-    c.to_json
+    res = {
+      crawl_id: c.crawl_id,
+      state: "pending",
+      message: "Your request has been accepted",
+      link: { rel: "self", href: url("/crawl/#{c.crawl_id}") }
+    }
+    res.to_json
   end
 
   # This is mainly to get status and a list of urls for client to get bodies of
