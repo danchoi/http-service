@@ -78,31 +78,24 @@ module HttpService
 end
 
 if __FILE__ == $0
+  # testing
+  require 'yaml'
 
-  if ARGV.first
-    c = Crawl[ARGV.first]
-    c.parallel_fetch 
-    
-  else
+  feeds = %w(
+   http://fulltextrssfeed.com/gonedigital.net/feed
+   http://fulltextrssfeed.com/www.telegraph.co.uk/news/rss
+   http://fulltextrssfeed.com/www.basingstokegazette.co.uk/news/rss
+   http://fulltextrssfeed.com/www.thesquareball.net/feed
+   http://fulltextrssfeed.com/www.badscience.net/feed
+   http://fulltextrssfeed.com/www.economist.com/feeds/print-sections/76/britain.xml
+   http://fulltextrssfeed.com/www.basingstokegazette.co.uk/business/rss
+   http://nosoftskills.com/feed
+   http://feedsanitizer.appspot.com/sanitize?url=http%3A%2F%2Fsimu.rtwblog.de%2Ffeed%2F&format=rss
+   http://fulltextrssfeed.com/blog.independent.org/feed
+   http://kindlefeeder.com/fail
+   http://kindlefeeders.com/fail
+  )
 
-    require 'yaml'
-
-    feeds = %w(
-     http://fulltextrssfeed.com/gonedigital.net/feed
-     http://fulltextrssfeed.com/www.telegraph.co.uk/news/rss
-     http://fulltextrssfeed.com/www.basingstokegazette.co.uk/news/rss
-     http://fulltextrssfeed.com/www.thesquareball.net/feed
-     http://fulltextrssfeed.com/www.badscience.net/feed
-     http://fulltextrssfeed.com/www.economist.com/feeds/print-sections/76/britain.xml
-     http://fulltextrssfeed.com/www.basingstokegazette.co.uk/business/rss
-     http://nosoftskills.com/feed
-     http://feedsanitizer.appspot.com/sanitize?url=http%3A%2F%2Fsimu.rtwblog.de%2Ffeed%2F&format=rss
-     http://fulltextrssfeed.com/blog.independent.org/feed
-     http://kindlefeeder.com/fail
-     http://kindlefeeders.com/fail
-    )
-
-    b = Crawl.create(urls: feeds.join("\n"))
-    b.parallel_fetch 
-  end
+  b = Crawl.create(urls: feeds.join("\n"))
+  b.parallel_fetch 
 end

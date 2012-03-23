@@ -1,0 +1,13 @@
+#!/usr/bin/env ruby
+
+$:.unshift File.join(File.dirname(__FILE__), '..', 'lib')
+require 'http_service'
+
+if ARGV.first
+  c = HttpService::Crawl[ARGV.first]
+  c.parallel_fetch 
+else
+  puts "Provide a crawl_id to start processing"
+end
+
+
