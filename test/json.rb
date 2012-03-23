@@ -26,7 +26,7 @@ urls = %w(
    http://kindlefeeders.com/fail
 )
 
-payload = {urls: urls.to_json}
+payload = {urls: urls}
 puts HttpService.post('/crawls', body: payload.to_json)
   
 

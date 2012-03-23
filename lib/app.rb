@@ -5,14 +5,20 @@ require 'crawl'
 
 class HttpService < Sinatra::Application
 
+  def log s
+    puts "http-service: #{s}"
+  end
+
   post '/crawls' do
     # request body is a list of urls as JSON array
     body = request.body.read
     urls = JSON.parse(body)['urls']
-    c = Crawl.create(urls: urls.split(/\n/))
-    puts c.inspect
+    c = Crawl.create(urls: urls)
+    log "created crawl #{c.crawl_id}" 
+
     # CHANGME. Do this asynchronously in a separate process or crontask
     # c.parallel_fetch 
+
     c.to_json
   end
 
