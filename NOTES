@@ -28,20 +28,11 @@ psql http-service -c 'select crawl_id, url, response_code, content_type, latency
 
 
 [choi world~/p]$ curl http://localhost:9292/crawl/1 | parsejson
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-100   891  100   891    0     0  97313      0 --:--:-- --:--:-- --:--:--  108k
-{"crawl_id"=>1,
- "created"=>"2012-03-22 19:46:51 -0400",
- "started"=>"2012-03-22 19:46:51 -0400",
- "completed"=>"2012-03-22 19:47:04 -0400",
- "url_count"=>12,
- "success_count"=>11,
- "urls"=>
-  "http://fulltextrssfeed.com/gonedigital.net/feed\nhttp://fulltextrssfeed.com/www.telegraph.co.uk/news/rss\nhttp://fulltextrssfeed.com/www.basingstokegazette.co.uk/news/rss\nhttp://fulltextrssfeed.com/www.thesquareball.net/feed\nhttp://fulltextrssfeed.com/www.badscience.net/feed\nhttp://fulltextrssfeed.com/www.economist.com/feeds/print-sections/76/britain.xml\nhttp://fulltextrssfeed.com/www.basingstokegazette.co.uk/business/rss\nhttp://nosoftskills.com/feed\nhttp://feedsanitizer.appspot.com/sanitize?url=http%3A%2F%2Fsimu.rtwblog.de%2Ffeed%2F&format=rss\nhttp://fulltextrssfeed.com/blog.independent.org/feed\nhttp://kindlefeeder.com/fail\nhttp://kindlefeeders.com/fail",
- "callback_url"=>nil,
- "callback_completed"=>nil}
-[
+
+{"state"=>"pending",
+ "message"=>"Your request is still processing",
+ "link"=>{"rel"=>"self", "href"=>"http://localhost:9292/crawl/20"}}
+
 {"state"=>"done",
  "message"=>"Your request has been processed",
  "link"=>{"rel"=>"self", "href"=>"http://localhost:9292/crawl/19"},
@@ -71,3 +62,25 @@ psql http-service -c 'select crawl_id, url, response_code, content_type, latency
     "href"=>"http://fulltextrssfeed.com/blog.independent.org/feed"},
    {"rel"=>"processed_url", "href"=>"http://kindlefeeder.com/fail"},
    {"rel"=>"processed_url", "href"=>"http://kindlefeeders.com/fail"}]}
+
+
+{"state"=>"done",
+ "message"=>"Your request has been processed",
+ "link"=>{"rel"=>"self", "href"=>"http://localhost:9292/crawl/1"},
+ "links"=>
+  [{"rel"=>"processed_url", "href"=>"http://localhost:9292/url/4"},
+   {"rel"=>"processed_url", "href"=>"http://localhost:9292/url/2"},
+   {"rel"=>"processed_url", "href"=>"http://localhost:9292/url/1"},
+   {"rel"=>"processed_url", "href"=>"http://localhost:9292/url/8"},
+   {"rel"=>"processed_url", "href"=>"http://localhost:9292/url/6"},
+   {"rel"=>"processed_url", "href"=>"http://localhost:9292/url/5"},
+   {"rel"=>"processed_url", "href"=>"http://localhost:9292/url/3"},
+   {"rel"=>"processed_url", "href"=>"http://localhost:9292/url/9"},
+   {"rel"=>"processed_url", "href"=>"http://localhost:9292/url/10"},
+   {"rel"=>"processed_url", "href"=>"http://localhost:9292/url/7"},
+   {"rel"=>"processed_url", "href"=>"http://localhost:9292/url/12"},
+   {"rel"=>"processed_url", "href"=>"http://localhost:9292/url/11"}]}
+
+# included failed urls?
+
+

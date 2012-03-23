@@ -2,6 +2,7 @@ require 'sinatra'
 require 'sequel'
 require 'json'
 require 'crawl'
+require 'uri'
 
 class HttpService < Sinatra::Application
 
@@ -45,15 +46,18 @@ class HttpService < Sinatra::Application
     }
     if crawl.completed
       status 202 # not 303; just include links in representation to save trips
-      representation[:links] = crawl.urls_array.map {|x| puts x; { rel: "processed_url", href: x } }
+      representation[:links] = crawl.urls_array.map {|x| 
+        url_id = DB[:urls].first(url:x)[:url_id]
+        { rel: "processed_url", href: url("/url/#{url_id}") } 
+      }
     else
       status 200
     end
     representation.to_json
   end
 
-  get '/url' do 
-    url = params[:url]
+  get '/url/:url_id' do |url_id|
+
     # TODO representation of body, content_type, any redirect
 
   end

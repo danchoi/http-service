@@ -1,6 +1,7 @@
 
 
 create table urls (
+  url_id serial primary key,
   url varchar unique,
   last_body text
 );
