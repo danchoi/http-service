@@ -1,6 +1,12 @@
 require 'sequel'
 DB = Sequel.connect 'postgres:///http-service'
 
+class Request < Sequel::Model
+  def recent?
+    self.created > (Time.now - (60*10))
+  end
+end
+
 module Database
   def self.create_request(res)
     unless DB[:urls].first(url: res[:url])

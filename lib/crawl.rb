@@ -21,6 +21,13 @@ class Crawl < Sequel::Model
     m = Curl::Multi.new
     urls.split(/\n/).each_slice(SLICE).with_index do |slice, i|
       slice.each do |url| 
+        last_request =  Request.filter(url:url).order(:request_id.desc).first
+        if last_request && last_request.recent?
+          log "using cached #{url}"
+          self.used_cached_count += 1
+          save
+          next
+        end
         start_time = Time.now
         res = {:body => "", :headers => "", url: url, crawl_id:self.crawl_id}
         c = Curl::Easy.new(url) do |curl|

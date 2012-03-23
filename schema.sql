@@ -12,6 +12,7 @@ create table crawls (
   completed timestamp with time zone,
   url_count integer default 0,
   success_count integer default 0,
+  used_cached_count integer default 0, -- just use last recent result
   urls text,
   callback_url varchar,
   callback_completed timestamp with time zone
