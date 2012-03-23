@@ -18,6 +18,8 @@ class HttpService < Sinatra::Application
 
     # CHANGME. Do this asynchronously in a separate process or crontask
     # c.parallel_fetch 
+    
+    status 202 # Accepted
 
     c.to_json
   end
