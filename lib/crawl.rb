@@ -7,7 +7,11 @@ class Crawl < Sequel::Model
   SLICE = 10
 
   def before_create
-    self.url_count = urls.split(/\n/).size
+    self.url_count = urls_array.size
+  end
+
+  def urls_array
+    self.urls.split(/\n/)
   end
 
   def to_json
@@ -23,7 +27,7 @@ class Crawl < Sequel::Model
     self.started = start
     cumulative_times = []
     m = Curl::Multi.new
-    urls.split(/\n/).each_slice(SLICE).with_index do |slice, i|
+    urls_array.each_slice(SLICE).with_index do |slice, i|
       slice.each do |url| 
         last_request =  Request.filter(url:url).order(:request_id.desc).first
         if last_request && last_request.recent?
@@ -72,24 +76,31 @@ class Crawl < Sequel::Model
 end
 
 if __FILE__ == $0
-  require 'yaml'
 
-  feeds = %w(
-   http://fulltextrssfeed.com/gonedigital.net/feed
-   http://fulltextrssfeed.com/www.telegraph.co.uk/news/rss
-   http://fulltextrssfeed.com/www.basingstokegazette.co.uk/news/rss
-   http://fulltextrssfeed.com/www.thesquareball.net/feed
-   http://fulltextrssfeed.com/www.badscience.net/feed
-   http://fulltextrssfeed.com/www.economist.com/feeds/print-sections/76/britain.xml
-   http://fulltextrssfeed.com/www.basingstokegazette.co.uk/business/rss
-   http://nosoftskills.com/feed
-   http://feedsanitizer.appspot.com/sanitize?url=http%3A%2F%2Fsimu.rtwblog.de%2Ffeed%2F&format=rss
-   http://fulltextrssfeed.com/blog.independent.org/feed
-   http://kindlefeeder.com/fail
-   http://kindlefeeders.com/fail
-  )
+  if ARGV.first
+    c = Crawl[ARGV.first]
+    c.parallel_fetch 
+    
+  else
 
-  b = Crawl.create(urls: feeds.join("\n"))
-  b.parallel_fetch 
+    require 'yaml'
 
+    feeds = %w(
+     http://fulltextrssfeed.com/gonedigital.net/feed
+     http://fulltextrssfeed.com/www.telegraph.co.uk/news/rss
+     http://fulltextrssfeed.com/www.basingstokegazette.co.uk/news/rss
+     http://fulltextrssfeed.com/www.thesquareball.net/feed
+     http://fulltextrssfeed.com/www.badscience.net/feed
+     http://fulltextrssfeed.com/www.economist.com/feeds/print-sections/76/britain.xml
+     http://fulltextrssfeed.com/www.basingstokegazette.co.uk/business/rss
+     http://nosoftskills.com/feed
+     http://feedsanitizer.appspot.com/sanitize?url=http%3A%2F%2Fsimu.rtwblog.de%2Ffeed%2F&format=rss
+     http://fulltextrssfeed.com/blog.independent.org/feed
+     http://kindlefeeder.com/fail
+     http://kindlefeeders.com/fail
+    )
+
+    b = Crawl.create(urls: feeds.join("\n"))
+    b.parallel_fetch 
+  end
 end

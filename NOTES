@@ -42,3 +42,32 @@ psql http-service -c 'select crawl_id, url, response_code, content_type, latency
  "callback_url"=>nil,
  "callback_completed"=>nil}
 [
+{"state"=>"done",
+ "message"=>"Your request has been processed",
+ "link"=>{"rel"=>"self", "href"=>"http://localhost:9292/crawl/19"},
+ "links"=>
+  [{"rel"=>"processed_url",
+    "href"=>"http://fulltextrssfeed.com/gonedigital.net/feed"},
+   {"rel"=>"processed_url",
+    "href"=>"http://fulltextrssfeed.com/www.telegraph.co.uk/news/rss"},
+   {"rel"=>"processed_url",
+    "href"=>
+     "http://fulltextrssfeed.com/www.basingstokegazette.co.uk/news/rss"},
+   {"rel"=>"processed_url",
+    "href"=>"http://fulltextrssfeed.com/www.thesquareball.net/feed"},
+   {"rel"=>"processed_url",
+    "href"=>"http://fulltextrssfeed.com/www.badscience.net/feed"},
+   {"rel"=>"processed_url",
+    "href"=>
+     "http://fulltextrssfeed.com/www.economist.com/feeds/print-sections/76/britain.xml"},
+   {"rel"=>"processed_url",
+    "href"=>
+     "http://fulltextrssfeed.com/www.basingstokegazette.co.uk/business/rss"},
+   {"rel"=>"processed_url", "href"=>"http://nosoftskills.com/feed"},
+   {"rel"=>"processed_url",
+    "href"=>
+     "http://feedsanitizer.appspot.com/sanitize?url=http%3A%2F%2Fsimu.rtwblog.de%2Ffeed%2F&format=rss"},
+   {"rel"=>"processed_url",
+    "href"=>"http://fulltextrssfeed.com/blog.independent.org/feed"},
+   {"rel"=>"processed_url", "href"=>"http://kindlefeeder.com/fail"},
+   {"rel"=>"processed_url", "href"=>"http://kindlefeeders.com/fail"}]}
