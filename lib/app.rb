@@ -7,11 +7,13 @@ class HttpService < Sinatra::Application
 
   post '/crawls' do
     # request body is a list of urls as JSON array
-    urls = JSON.parse(request.body.read)
-    puts urls.inspect
+    body = request.body.read
+    urls = JSON.parse(body)['urls']
     c = Crawl.create(urls: urls.split(/\n/))
+    puts c.inspect
     # CHANGME. Do this asynchronously in a separate process or crontask
-    c.parallel_fetch 
+    # c.parallel_fetch 
+    c.to_json
   end
 
   # This is mainly to get status and a list of urls for client to get bodies of

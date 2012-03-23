@@ -1,0 +1,1 @@
+psql http-service -x -c "select * from crawls where crawl_id = $1"

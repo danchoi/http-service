@@ -7,8 +7,11 @@ class Crawl < Sequel::Model
   SLICE = 10
 
   def before_create
-    self.started = Time.now
     self.url_count = urls.split(/\n/).size
+  end
+
+  def to_json
+    DB[:crawls].first(crawl_id:self.crawl_id).to_json
   end
 
   def log s
@@ -17,6 +20,7 @@ class Crawl < Sequel::Model
 
   def parallel_fetch
     start = Time.now
+    self.started = start
     cumulative_times = []
     m = Curl::Multi.new
     urls.split(/\n/).each_slice(SLICE).with_index do |slice, i|
