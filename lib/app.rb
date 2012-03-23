@@ -48,9 +48,11 @@ class API < Sinatra::Application
     if crawl.completed
       status 202 # not 303; just include links in representation to save trips
       representation[:links] = crawl.urls_array.map {|x| 
-        url_id = DB[:urls].first(url:x)[:url_id]
+        url_rec = DB[:urls].first(url:x)
+        next unless url_rec
+        url_id = url_rec[:url_id]
         { rel: "processed_url", href: url("/url/#{url_id}") } 
-      }
+      }.compact
     else
       status 200
     end

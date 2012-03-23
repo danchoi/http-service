@@ -12,7 +12,7 @@ module HttpService
     end
 
     def urls_array
-      self.urls.split(/\n/)
+      self.urls.strip.split(/\n/)
     end
 
     def to_json
