@@ -39,7 +39,7 @@ class Crawl < Sequel::Model
           curl.on_complete do |easy| 
             next if easy.response_code == 0
             log "completed #{url}"
-            self.success_count += 1
+            self.completed_count += 1
             save
             res[:latency] = Time.now - start_time
             cumulative_times << res[:latency]
