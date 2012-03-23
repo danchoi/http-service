@@ -59,6 +59,7 @@ class HttpService < Sinatra::Application
   get '/url/:url_id' do |url_id|
 
     # TODO representation of body, content_type, any redirect
+    # plus any failures
 
   end
 end
