@@ -10,7 +10,7 @@ class HttpService < Sinatra::Application
     urls = JSON.parse(request.body.read)
     puts urls.inspect
     c = Crawl.create(urls: urls.split(/\n/))
-    # CHANGME. Do this asynchronously
+    # CHANGME. Do this asynchronously in a separate process or crontask
     c.parallel_fetch 
   end
 
