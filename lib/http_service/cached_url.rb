@@ -3,10 +3,14 @@ require 'http_service'
 module HttpService
   class CachedUrl
     def self.find(url_id)
-      DB["select urls.url, response_code, redirect, content_type, headers, created, length(urls.last_body) as body_length
+      x = DB["select urls.url, response_code, redirect, content_type, headers, created, error, length(urls.last_body) as body_length
         from urls inner join requests on (urls.last_request_id = requests.request_id) 
-        where url_id = ?", url_id].first.to_hash
-      
+        where url_id = ?", url_id].first
+      x ? x.to_hash : nil 
+    end
+
+    def self.find_body(url_id)
+      DB["select last_body from urls where urls.url_id = ?", url_id].first[:last_body]
     end
   end
 end

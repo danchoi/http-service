@@ -1,11 +1,11 @@
 require 'sinatra'
 require 'sequel'
 require 'json'
-require 'http_service/crawl'
-require 'http_service/cached_url'
 require 'uri'
+require 'http_service'
 
-class HttpService < Sinatra::Application
+module HttpService
+class API < Sinatra::Application
 
   def log s
     puts "http-service: #{s}"
@@ -58,12 +58,24 @@ class HttpService < Sinatra::Application
   end
 
   get '/url/:url_id' do |url_id|
-    # TODO representation of body, content_type, any redirect
-    # plus any failures
-    DB["select urls.url, requests,header from urls inner join requests on (urls.last_request_id = requests.request_id) where url_id = ?", url_id].to_hash
+    u = CachedUrl.find url_id 
+    if u
+      representation = u.merge(
+        link: { rel: "self", href: url("/url/#{url_id}") },
+        links: { rel: "body", href: url("/url/#{url_id}/body") }
+      )
+      representation.to_json
+    else
+      status 404
+    end
   end
 
   get '/url/:url_id/body' do |url_id|
+    meta = CachedUrl.find(url_id)
+    body = CachedUrl.find_body(url_id)
+    # TODO: link header for self hypermedia link?
+    headers "Content-Type" => meta[:content_type]
+    body
   end
 end
-
+end

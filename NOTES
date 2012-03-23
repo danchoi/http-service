@@ -92,3 +92,17 @@ psql http-service -c 'select crawl_id, url, response_code, content_type, latency
  
 
 
+[choi world~]$ curl -s http://localhost:9292/url/10 | parsejson
+{"url"=>
+  "http://feedsanitizer.appspot.com/sanitize?url=http%3A%2F%2Fsimu.rtwblog.de%2Ffeed%2F&format=rss",
+ "response_code"=>200,
+ "redirect"=>nil,
+ "content_type"=>"application/rss+xml",
+ "headers"=>
+  "HTTP/1.1 200 OK\r\nContent-Type: application/rss+xml\r\nVary: Accept-Encoding\r\nDate: Fri, 23 Mar 2012 03:04:52 GMT\r\nServer: Google Frontend\r\nCache-Control: private\r\nTransfer-Encoding: chunked\r\n\r\n",
+ "created"=>"2012-03-22 23:04:52 -0400",
+ "error"=>nil,
+ "body_length"=>8139}
+[
+
+
