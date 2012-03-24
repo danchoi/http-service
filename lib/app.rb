@@ -17,12 +17,10 @@ class API < Sinatra::Application
     # request body is a list of urls as JSON array
     body = request.body.read
     urls = JSON.parse(body)['urls']
+
     c = Crawl.create(urls: urls.join("\n"))
     log "created crawl #{c.crawl_id}; pushing onto queue" 
     REDIS.rpush "http-service:crawl-queue", c.crawl_id
-
-    # CHANGME. Do this asynchronously in a separate process or crontask
-    # c.parallel_fetch 
     
     status 202 # Accepted
     representation = {
