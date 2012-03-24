@@ -45,14 +45,16 @@ class API < Sinatra::Application
       message: message,
       link: { rel: "self", href: url("/crawl/#{crawl.crawl_id}") }
     }
+    # The crawl may not be done, but the client can just stop waiting
+    # and ping for the latest content for the URLs in the list.
+    representation[:links] = crawl.urls_array.map {|x| 
+      url_rec = DB[:urls].first(url:x)
+      next unless url_rec
+      url_id = url_rec[:url_id]
+      { rel: "processed_url", href: url("/url/#{url_id}") } 
+    }.compact
     if crawl.completed
       status 202 # not 303; just include links in representation to save trips
-      representation[:links] = crawl.urls_array.map {|x| 
-        url_rec = DB[:urls].first(url:x)
-        next unless url_rec
-        url_id = url_rec[:url_id]
-        { rel: "processed_url", href: url("/url/#{url_id}") } 
-      }.compact
     else
       status 200
     end
