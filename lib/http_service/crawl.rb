@@ -26,6 +26,12 @@ module HttpService
     def parallel_fetch
       start = Time.now
       self.started = start
+      if urls_array.empty?
+        self.completed = Time.now 
+        save
+        log "No urls to crawl! Completed at #{self.completed}"
+        return      # early exit
+      end
       cumulative_times = []
       m = Curl::Multi.new
       urls_array.each_slice(SLICE).with_index do |slice, i|
@@ -68,10 +74,10 @@ module HttpService
           m.add c
         end
         m.perform
-        self.completed = Time.now 
-        save
       end
-      log "Done"
+      self.completed = Time.now 
+      save
+      log "Completed at #{self.completed}"
       @results
     end
   end
