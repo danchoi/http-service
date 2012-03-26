@@ -33,4 +33,5 @@ create table requests (
 );
 
 alter table urls add column last_request_id integer references requests(request_id);
-
+create index requests_crawl_id_index on requests (crawl_id);
+create index urls_url_index on urls (url);
